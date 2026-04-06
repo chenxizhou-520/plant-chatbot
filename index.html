@@ -7,113 +7,20 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-        }
-        .chat-container {
-            width: 100%;
-            max-width: 800px;
-            height: 100vh;
-            background: rgba(255, 255, 255, 0.95);
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 0 30px rgba(0,0,0,0.1);
-        }
-        .chat-header {
-            background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            color: white;
-        }
-        .seed-avatar {
-            width: 80px;
-            height: 80px;
-            background: rgba(139, 69, 19, 0.8);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 50px;
-            margin-right: 20px;
-            animation: pulse 2s infinite;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        .messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            background: #fafafa;
-        }
-        .message {
-            margin-bottom: 20px;
-            display: flex;
-            align-items: flex-start;
-        }
-        .message-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            margin-right: 12px;
-            flex-shrink: 0;
-            background: #8B4513;
-        }
-        .message-content {
-            background: white;
-            padding: 15px 20px;
-            border-radius: 20px;
-            max-width: 75%;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            border: 2px solid #e8f5e9;
-            line-height: 1.6;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); height: 100vh; overflow: hidden; display: flex; justify-content: center; }
+        .chat-container { width: 100%; max-width: 800px; height: 100vh; background: rgba(255, 255, 255, 0.95); display: flex; flex-direction: column; box-shadow: 0 0 30px rgba(0,0,0,0.1); }
+        .chat-header { background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%); padding: 20px; display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); color: white; }
+        .seed-avatar { width: 80px; height: 80px; background: rgba(139, 69, 19, 0.8); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 50px; margin-right: 20px; animation: pulse 2s infinite; border: 3px solid rgba(255, 255, 255, 0.3); }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .messages { flex: 1; padding: 20px; overflow-y: auto; background: #fafafa; }
+        .message { margin-bottom: 20px; display: flex; align-items: flex-start; }
+        .message-avatar { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-right: 12px; flex-shrink: 0; background: #8B4513; }
+        .message-content { background: white; padding: 15px 20px; border-radius: 20px; max-width: 75%; box-shadow: 0 3px 10px rgba(0,0,0,0.1); border: 2px solid #e8f5e9; line-height: 1.6; }
         .user-message { flex-direction: row-reverse; }
-        .user-message .message-content {
-            background: #81c784;
-            color: white;
-            margin-right: 12px;
-        }
-        .input-container {
-            padding: 20px;
-            background: white;
-            border-top: 2px solid #e8f5e9;
-            display: flex;
-            gap: 15px;
-        }
-        #messageInput {
-            flex: 1;
-            border: none;
-            background: #f5f5f5;
-            padding: 15px 20px;
-            border-radius: 25px;
-            font-size: 16px;
-            outline: none;
-        }
-        .send-button {
-            background: #43a047;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            cursor: pointer;
-            font-size: 20px;
-        }
+        .user-message .message-content { background: #81c784; color: white; margin-right: 12px; }
+        .input-container { padding: 20px; background: white; border-top: 2px solid #e8f5e9; display: flex; gap: 15px; }
+        #messageInput { flex: 1; border: none; background: #f5f5f5; padding: 15px 20px; border-radius: 25px; font-size: 16px; outline: none; }
+        .send-button { background: #43a047; color: white; border: none; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; font-size: 20px; }
     </style>
 </head>
 <body>
@@ -140,19 +47,21 @@
     </div>
 
     <script>
+        // 1. 拆分法配置 API Key
         const key_part1 = "gsk_riSdnyqXNvtOgN3ZjZg6WGdyb"; 
         const key_part2 = "3FYkAEKV3bt0RkyzKsttyll0Loa";
-        const API_KEY = key_part1 + key_part2;;
-        // 2. 系统提示词 (采用数组安全拼接，彻底杜绝多行报错)
+        const API_KEY = key_part1 + key_part2;
+
+        // 2. 数组拼接系统提示词，彻底杜绝语法报错
         const SYSTEM_PROMPT = [
             "你叫芽芽，是一个针对中国小学五年级学生的STEAM教学陪伴机器人。",
-            "核心任务：引导学生学习“植物的生命（The Life of Plants）”课程。",
+            "核心任务：引导学生学习植物的生命（The Life of Plants）课程。",
             "性格要求：童真、友善、博学、耐心。",
             "教学策略：",
             "1. 采用苏格拉底式引导：不要直接给出完整答案，而是解释一部分事实后提出一个启发性问题。",
-            "2. STEAM结合：涉及生物知识时，顺带提及相关的英语词汇（如 Photosynthesis, Chlorophyll）或引导学生观察植物的颜色与对称性（艺术元素）。",
-            "3. 知识背景：严格遵循并扩展中国小学科学教材内容。",
-            "4. 道德准则：若学生输入辱骂、不道德或攻击性内容，必须温和地指出这种行为不当，并引导回学习话题。",
+            "2. STEAM结合：涉及生物知识时，顺带提及相关的英语词汇（如 Photosynthesis）或引导观察艺术美感。",
+            "3. 知识背景：严格遵循中国小学科学教材内容。",
+            "4. 道德准则：若学生输入辱骂等不当内容，必须温和指出并引导回学习话题。",
             "5. 语言：以中文为主，英语为辅。"
         ].join("\n");
 
@@ -172,7 +81,7 @@
                 const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
                     method: "POST",
                     headers: {
-                        "Authorization": "Bearer " + API_KEY, // 安全拼接，不用反引号
+                        "Authorization": "Bearer " + API_KEY,
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
@@ -181,6 +90,11 @@
                         temperature: 0.7
                     })
                 });
+                
+                if (!response.ok) {
+                    throw new Error("API 请求失败");
+                }
+                
                 const data = await response.json();
                 const aiResponse = data.choices[0].message.content;
                 addMessage(aiResponse, false);
@@ -196,7 +110,6 @@
             const div = document.createElement('div');
             div.className = "message " + (isUser ? "user-message" : "");
             
-            // 安全的 HTML 拼接方式
             const avatarHtml = '<div class="message-avatar">' + (isUser ? '👦' : '🌱') + '</div>';
             const contentHtml = '<div class="message-content">' + marked.parse(text) + '</div>';
             
@@ -212,3 +125,5 @@
             }
         });
     </script>
+</body>
+</html>
